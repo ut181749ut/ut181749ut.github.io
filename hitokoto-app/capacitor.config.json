@@ -1,0 +1,11 @@
+{
+  "appId": "io.github.ut181749ut.hitokoto",
+  "appName": "一言日記",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  },
+  "android": {
+    "backgroundColor": "#FAF7F2"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "name": "hitokoto-app",
+  "version": "1.0.0",
+  "private": true,
+  "description": "一言日記をCapacitorで包んだスマホアプリ(Android)",
+  "scripts": {
+    "sync": "cap sync"
+  },
+  "dependencies": {
+    "@capacitor/android": "^6.2.1",
+    "@capacitor/core": "^6.2.1",
+    "@capacitor/filesystem": "^6.0.3",
+    "@capacitor/share": "^6.0.3"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.2.1"
+  }
+}

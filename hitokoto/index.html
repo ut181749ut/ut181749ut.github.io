@@ -75,12 +75,12 @@
       <p>書きためた一言を、月ごとに並べた<br>「今年の一言」にします。</p>
       <ul>
         <li>1年分を1枚の画像で保存</li>
-        <li>写真つきでPDFに保存・印刷</li>
+        <li id="pdfFeature">写真つきでPDFに保存・印刷</li>
         <li>書いた日数・最長連続・写真の枚数</li>
       </ul>
       <div class="price" id="price"></div>
       <a class="btn" id="buyBtn" href="#">購入する（買い切り）</a>
-      <div class="code-row">
+      <div class="code-row" id="codeRow">
         <input id="codeInput" type="text" placeholder="購入コードをお持ちの方" autocomplete="off">
         <button class="btn ghost small" id="codeBtn">使う</button>
       </div>
@@ -148,7 +148,8 @@
       <span>1年のまとめ<small>1年分を画像・PDFにまとめる</small></span>
       <span class="badge" id="proBadge">有料</span>
     </button>
-    <div class="row" style="justify-content:flex-end">
+    <div class="row">
+      <a href="privacy.html" style="color:var(--sub);font-size:13px">プライバシーポリシー</a>
       <button class="btn" id="setClose">閉じる</button>
     </div>
   </div>

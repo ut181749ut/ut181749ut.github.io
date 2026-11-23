@@ -5,6 +5,9 @@
   "use strict";
 
   const CFG = window.HITOKOTO_CONFIG || {};
+  // スマホアプリ（Capacitor）の中で動いているか
+  const NATIVE = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
+  const Plugins = (window.Capacitor && window.Capacitor.Plugins) || {};
   const MAX = 50;
   const WD = "日月火水木金土";
   const $ = (id) => document.getElementById(id);
@@ -446,8 +449,17 @@
     const pro = isPro();
     $("lock").hidden = pro;
     $("yearBody").hidden = !pro;
-    $("price").textContent = CFG.paymentUrl ? (CFG.proPrice || "") : "準備中";
-    $("buyBtn").href = CFG.paymentUrl || "#";
+    if (NATIVE) {
+      // Google Play のアプリでは外部の決済に案内できないため、Play の課金を入れるまで準備中にする
+      $("price").textContent = "近日公開";
+      $("buyBtn").hidden = true;
+      $("codeRow").hidden = true;
+      $("pdfFeature").hidden = true;
+      $("savePdf").hidden = true;
+    } else {
+      $("price").textContent = CFG.paymentUrl ? (CFG.proPrice || "") : "準備中";
+      $("buyBtn").href = CFG.paymentUrl || "#";
+    }
     if (!pro) return;
 
     const yd = yearData(sumYear);
@@ -595,6 +607,7 @@
     toast("画像を作っています…");
     const blob = await makeYearImage(sumYear);
     if (!blob) { toast("画像を作れませんでした"); return; }
+    if (NATIVE) { await shareNative(blob, `hitokoto_${sumYear}.png`); return; }
     const name = `一言日記_${sumYear}.png`;
     const file = new File([blob], name, { type: "image/png" });
     // スマホは共有メニュー（写真に保存など）、PCはダウンロード
@@ -608,6 +621,23 @@
     setTimeout(() => URL.revokeObjectURL(a.href), 4000);
     toast("画像を保存しました");
   });
+  // アプリ版: いったん端末に書き出して、共有メニュー（写真に保存・LINEなど）を開く
+  async function shareNative(blob, name) {
+    const { Filesystem, Share } = Plugins;
+    if (!Filesystem || !Share) { toast("この端末では保存できませんでした"); return; }
+    try {
+      const data = await new Promise((resolve, reject) => {
+        const r = new FileReader();
+        r.onload = () => resolve(String(r.result).split(",")[1]);
+        r.onerror = () => reject(r.error);
+        r.readAsDataURL(blob);
+      });
+      const res = await Filesystem.writeFile({ path: name, data, directory: "CACHE" });
+      await Share.share({ title: `${sumYear}年の一言`, files: [res.uri] });
+    } catch (e) {
+      if (!/cancel/i.test(String(e && e.message))) toast("保存できませんでした");
+    }
+  }
   $("savePdf").addEventListener("click", () => { if (isPro()) window.print(); });
 
   // =========================================================
@@ -662,7 +692,7 @@
     go("home");
   })();
 
-  if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+  if (!NATIVE && "serviceWorker" in navigator && location.protocol.startsWith("http")) {
     navigator.serviceWorker.register("sw.js").catch(() => {});
   }
 

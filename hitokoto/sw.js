@@ -1,12 +1,13 @@
 // オフラインでも開けるようにするための service worker
 // アプリを更新したら VERSION を上げる
-const VERSION = "hitokoto-v1";
+const VERSION = "hitokoto-v2";
 const SHELL = [
   "./",
   "index.html",
   "style.css",
   "app.js",
   "config.js",
+  "privacy.html",
   "manifest.webmanifest",
   "icons/icon-192.png",
   "icons/icon-512.png",
