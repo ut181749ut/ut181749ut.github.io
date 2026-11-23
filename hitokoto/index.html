@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ja" data-theme="kinari">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#FAF7F2">
+<meta name="description" content="1日1行、30秒で終わる日記。1年たつと「去年の今日」が出てきます。">
+<title>一言日記</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+
+  <!-- ============ ホーム ============ -->
+  <section id="home">
+    <div class="top">
+      <div>
+        <h1 class="date" id="date"></h1>
+        <p class="stats" id="stats"></p>
+      </div>
+      <button class="icon-btn" id="openSettings" aria-label="設定">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+      </button>
+    </div>
+
+    <div class="write" id="homeEditor">
+      <input type="text" class="hand e-text" maxlength="50" placeholder="今日を一言で" autocomplete="off" enterkeyhint="done">
+      <div class="photo-preview e-preview" hidden><img alt=""><button class="remove" aria-label="写真をはずす">×</button></div>
+      <div class="row">
+        <div class="row-left">
+          <label class="photo-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2h6l2 2h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
+            <span class="e-photo-label">写真</span>
+            <input type="file" accept="image/*" class="e-file" hidden>
+          </label>
+          <span class="count e-count">0 / 50</span>
+        </div>
+        <button class="btn e-save">保存</button>
+      </div>
+    </div>
+
+    <div class="section-title">これまでの「今日」</div>
+    <div class="past" id="past"></div>
+  </section>
+
+  <!-- ============ カレンダー ============ -->
+  <section id="calendar" hidden>
+    <div class="cal-head">
+      <button class="arrow" id="prev" aria-label="前の月">‹</button>
+      <h2 id="month"></h2>
+      <button class="arrow" id="next" aria-label="次の月">›</button>
+    </div>
+    <p class="cal-sum" id="calSum"></p>
+    <div class="grid" id="grid"></div>
+    <div class="center">
+      <button class="btn ghost small" id="copyAll">全部をテキストでコピー</button>
+    </div>
+  </section>
+
+  <!-- ============ 1年のまとめ ============ -->
+  <section id="summary" hidden>
+    <div class="sum-head no-print">
+      <h2>1年のまとめ</h2>
+    </div>
+    <div class="year-tabs" id="yearTabs"></div>
+
+    <div class="lock" id="lock">
+      <h3>1年の一言を、1枚にまとめる</h3>
+      <p>書きためた一言を、月ごとに並べた<br>「今年の一言」にします。</p>
+      <ul>
+        <li>1年分を1枚の画像で保存</li>
+        <li>写真つきでPDFに保存・印刷</li>
+        <li>書いた日数・最長連続・写真の枚数</li>
+      </ul>
+      <div class="price" id="price"></div>
+      <a class="btn" id="buyBtn" href="#">購入する（買い切り）</a>
+      <div class="code-row">
+        <input id="codeInput" type="text" placeholder="購入コードをお持ちの方" autocomplete="off">
+        <button class="btn ghost small" id="codeBtn">使う</button>
+      </div>
+    </div>
+
+    <div id="yearBody" hidden>
+      <h2 class="hand" id="yearTitle" style="margin:18px 0 0;font-size:26px"></h2>
+      <div class="year-stats" id="yearStats"></div>
+      <div class="center no-print">
+        <button class="btn small" id="saveImage">画像で保存</button>
+        <button class="btn ghost small" id="savePdf">PDFで保存・印刷</button>
+      </div>
+      <div id="months"></div>
+    </div>
+  </section>
+
+  <div class="spacer"></div>
+  <div class="nav no-print">
+    <button class="btn ghost" id="toHome" hidden>今日にもどる</button>
+    <button class="btn ghost" id="toCal">カレンダー</button>
+  </div>
+  <p class="note">一言と写真は、この端末の中だけに保存されます</p>
+</div>
+
+<!-- ============ 日付シート ============ -->
+<div class="overlay" id="dayOverlay">
+  <div class="sheet" role="dialog" aria-modal="true">
+    <h3 id="dayTitle"></h3>
+    <div id="dayView">
+      <div class="text hand" id="dayText"></div>
+      <img class="view-photo" id="dayPhoto" alt="" hidden>
+      <div class="row">
+        <button class="btn ghost" id="dayEdit">書く</button>
+        <button class="btn" id="dayClose">閉じる</button>
+      </div>
+    </div>
+    <div class="write" id="dayEditor" style="margin-top:0" hidden>
+      <input type="text" class="hand e-text" maxlength="50" placeholder="この日の一言" autocomplete="off" enterkeyhint="done">
+      <div class="photo-preview e-preview" hidden><img alt=""><button class="remove" aria-label="写真をはずす">×</button></div>
+      <div class="row">
+        <div class="row-left">
+          <label class="photo-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2h6l2 2h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
+            <span class="e-photo-label">写真</span>
+            <input type="file" accept="image/*" class="e-file" hidden>
+          </label>
+          <span class="count e-count">0 / 50</span>
+        </div>
+        <span>
+          <button class="btn ghost small" id="dayCancel">やめる</button>
+          <button class="btn e-save">保存</button>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 設定シート ============ -->
+<div class="overlay" id="setOverlay">
+  <div class="sheet" role="dialog" aria-modal="true">
+    <h3>設定</h3>
+    <div class="setting-title">テーマ</div>
+    <div class="themes" id="themes"></div>
+    <button class="setting-item" id="toSummary">
+      <span>1年のまとめ<small>1年分を画像・PDFにまとめる</small></span>
+      <span class="badge" id="proBadge">有料</span>
+    </button>
+    <div class="row" style="justify-content:flex-end">
+      <button class="btn" id="setClose">閉じる</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
